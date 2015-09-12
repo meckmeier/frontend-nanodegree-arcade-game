@@ -10,4 +10,6 @@ If your player encounters a bug, you will lose a try and your player will turn t
 You have 5 tries to accumulate a score.
 Each time you reach water you will get a point.
 
-When you have lost all your tries, thegame will be over.
+When you have lost all your tries, the game will be over.
+
+To restart, refresh your browser.

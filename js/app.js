@@ -1,13 +1,16 @@
+
 // Enemies our player must avoid
 var score = 0;
 var tries = 5;
 
 var Enemy = function(initialX, initialY, speed) {
+  'use strict';
   // Variables applied to each of our instances go here
   // we've provided one for you to get started
 
   // The image/sprite for our enemies, this uses
   // a helper we've provided to easily load images
+
   this.x = initialX;
   this.y = initialY;
   this.speed  = speed;
@@ -18,12 +21,13 @@ var Enemy = function(initialX, initialY, speed) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
+  'use strict';
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
   // all computers.
 
   this.x = this.x + this.speed *dt;
-
+  //ctx is a global variable set in engine.js
   if(this.x > ctx.canvas.width) {
     this.x = -60;
     this.speed =  Math.floor(Math.random() * (300 - 70)) + 70;
@@ -39,7 +43,8 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
-
+  'use strict';
+  //resources is defined in
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
 };
@@ -47,7 +52,9 @@ Enemy.prototype.render = function() {
 // Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+//despite the rule of upper case for the class variables the other code in the project is expecting this lower case.
 var player = function() {
+  'use strict';
   //these images are used to manage the game flow.
   this.sprite = 'images/char-horn-girl.png';
   this.deadsprite = 'images/rock.png';
@@ -57,45 +64,48 @@ var player = function() {
 };
 
 player.prototype.update = function(dt) {
+  'use strict';
   //i'm not using this function, but it needs to be here for the game to work.
 };
 
 player.prototype.collison = function(){
-
+  'use strict';
   this.sprite = this.deadsprite;
 
-}
+};
 
 player.prototype.reset = function(){
-
+  'use strict';
   this.x = 200;
   this.y = 400;
   this.sprite = this.originalsprite;
 
-}
+};
 
 player.prototype.gameover = function(){
-
+  'use strict';
   this.x = 400;
   this.y = 400;
   this.sprite = this.gameoversprite;
 
-}
+};
 
 player.prototype.render = function() {
-
+  'use strict';
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 
 };
 
 player.prototype.handleInput = function(keyPressed){
+  'use strict';
   var stepHorizontalLength = 101;
   var stepVerticalLength = 83;
 
   // check to see if you are on the water:
   if (this.sprite === this.winningsprite){
     score = parseInt(score) + 1;
-    player.reset();
+    this.reset();
+    return;
   }
   //check to see if you are out of tries:
   if( tries === 0) {
@@ -107,14 +117,9 @@ player.prototype.handleInput = function(keyPressed){
   //check to see if you suffered a collision:
   if (this.sprite === this.deadsprite ) {
       tries = parseInt(tries) -1;
-      player.reset();
+      this.reset();
       return;
     }
-
-  //check to see if you are in a collision state...
-  if (player.x > this.x  && player.x < this.x + 50 && player.y > this.y && player.y < this.y + 50) {
-        player.collison();
-      }
 
   //now process the key press:
   if(keyPressed === 'up' && this.y > 0) {
@@ -140,8 +145,11 @@ player.prototype.handleInput = function(keyPressed){
   }
 
   //exit the program flow -- and record the current score
+  //use of $ is based on the jQuery library loaded in HTML file.
     $("#score").html(score);
     $("#tries").html(tries);
+
+
 };
 
 
@@ -155,7 +163,7 @@ var allEnemies = [];
   allEnemies.push(new Enemy(-50, 60 + (83*1), 200));
   //allEnemies.push(new Enemy(-60, 60 + 85 * i, tempSpeed));
 
-var player =new player;
+var player =new player();
 player.x = 200;
 player.y = 400;
 
